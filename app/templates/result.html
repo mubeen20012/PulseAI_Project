@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heart Disease Prediction Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <header class="header">
+            <h1>🫀 Heart Disease Risk Assessment</h1>
+            <h2 class="subtitle">AI-Powered Personalized Report</h2>
+        </header>
+
+        <!-- Result Card -->
+        <div class="card result-card">
+
+            <!-- Risk Badge -->
+            <div class="risk-badge {{ result['badge_color'] }}">
+                {{ result['risk_level'] }} - {{ (result['probability']*100)|round(1) }}%
+            </div>
+
+            <!-- Short AI Prediction -->
+            <div class="ai-prediction">
+                {% if result['risk_level'] == 'Low Risk' %}
+                    ✔ Low risk — maintain healthy lifestyle and routine check-ups.
+                {% elif result['risk_level'] == 'Moderate Risk' %}
+                    ⚠️ Moderate risk — lifestyle changes & follow-up recommended.
+                {% else %}
+                    ⚠️ High risk — consult a cardiologist immediately.
+                {% endif %}
+            </div>
+
+            <!-- Personalized Recommendation -->
+            <div class="section recommendation">
+                <h3>Personalized Recommendation</h3>
+                <p>{{ result['recommendation'] }}</p>
+            </div>
+
+            <!-- ECG Preview -->
+            {% if result.get('ecg_path') %}
+            <div class="section xray-preview">
+                <h3>ECG Preview</h3>
+                <img src="{{ url_for('static', filename='uploads/' + result['ecg_path']) }}" alt="ECG Image">
+            </div>
+            {% endif %}
+
+            <!-- X-ray Preview -->
+            {% if result.get('xray_path') %}
+            <div class="section xray-preview">
+                <h3>X-ray Preview</h3>
+                <img src="{{ url_for('static', filename='uploads/' + result['xray_path']) }}" alt="X-ray Image">
+            </div>
+            {% endif %}
+
+            <!-- Back Button -->
+            <a class="btn back-btn" href="{{ url_for('index') }}">← Back to Home</a>
+
+        </div>
+
+    </div>
+</body>
+</html>

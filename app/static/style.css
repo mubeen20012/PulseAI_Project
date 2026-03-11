@@ -1,0 +1,152 @@
+/* Base & Reset */
+* { box-sizing: border-box; margin:0; padding:0; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f4f8;
+    color: #333;
+    line-height: 1.6;
+    padding-bottom: 50px;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+/* Header */
+.header h1 {
+    text-align: center;
+    color: #1976d2; 
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+.header .subtitle {
+    text-align: center;
+    color: #555;
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+}
+
+/* Card - Modern elevation */
+.card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    animation: slideIn 0.8s ease-in-out;
+}
+
+/* Sections */
+.section { margin-bottom: 25px; }
+.section h3 {
+    color: #1565c0;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+/* Grid Inputs */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 15px; }
+.input-group { display: flex; flex-direction: column; }
+
+/* Form Controls */
+input, select, textarea {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 8px rgba(25,118,210,0.3);
+}
+
+/* --- UPDATED UPLOAD SYSTEM --- */
+.upload-card {
+    transition: all 0.3s ease;
+    border: 2px dashed #1976d2 !important;
+    border-radius: 20px !important;
+    background: #e3f2fd;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+.upload-card:hover {
+    border-color: #0d47a1 !important;
+    background-color: #f8fbff;
+    transform: translateY(-2px);
+}
+
+.image-preview-wrapper {
+    width: 100%;
+    min-height: 200px;
+    background: #ffffff;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    margin-top: 10px;
+    border: 1px solid #e0e0e0;
+}
+
+.text-light-blue { color: #1976d2; opacity: 0.6; }
+
+/* Image scaling for ECG and X-ray */
+#ecg-preview-img, #xray-preview-img {
+    max-height: 190px;
+    object-fit: contain;
+    width: 100%;
+    display: block;
+}
+
+/* Action Button */
+.btn {
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.3s;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(25,118,210,0.2);
+}
+.btn:hover { 
+    background-color: #0d47a1;
+    box-shadow: 0 6px 20px rgba(25,118,210,0.3);
+}
+
+/* Risk Badges & Feedback */
+.risk-badge {
+    display: inline-block;
+    padding: 14px 30px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 22px;
+    color: white;
+    margin-bottom: 20px;
+}
+.risk-badge.green { background-color: #4caf50; }
+.risk-badge.yellow { background-color: #ffb300; }
+.risk-badge.red { background-color: #e53935; }
+
+/* Animations */
+@keyframes fadeIn { from {opacity:0; transform: translateY(15px);} to {opacity:1; transform: translateY(0);} }
+@keyframes slideIn { from {opacity:0; transform: translateY(20px);} to {opacity:1; transform: translateY(0);} }
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .container { width: 95%; margin: 20px auto; }
+    .header h1 { font-size: 1.8rem; }
+    .upload-card { padding: 10px; }
+}

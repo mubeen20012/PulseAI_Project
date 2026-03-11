@@ -1,0 +1,224 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<style>
+    /* Base Layout Settings */
+    .container-custom {
+        width: 90%;
+        max-width: 900px;
+        margin: 40px auto;
+    }
+
+    .header h1 {
+        text-align: center;
+        color: #1976d2; 
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+    .header .subtitle {
+        text-align: center;
+        color: #555;
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+
+    /* Modern Card & Sections */
+    .card {
+        background: #fff;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        animation: slideIn 0.8s ease-in-out;
+    }
+
+    .section h3 {
+        color: #1565c0;
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+    }
+
+    /* Clinical Input Grid */
+    .grid { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+        gap: 20px; 
+    }
+    
+    .input-group-custom { display: flex; flex-direction: column; }
+    
+    .input-group-custom label {
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: #4a5568;
+        margin-bottom: 5px;
+    }
+
+    input, select {
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+        transition: 0.3s;
+        background-color: #f8f9fa;
+    }
+    input:focus, select:focus {
+        outline: none;
+        border-color: #1976d2;
+        box-shadow: 0 0 8px rgba(25,118,210,0.3);
+    }
+
+    /* --- UPLOAD BOX STYLING --- */
+    .upload-card {
+        transition: all 0.3s ease;
+        border: 2px dashed #1976d2 !important;
+        border-radius: 20px !important;
+        background: #e3f2fd;
+        padding: 25px;
+        text-align: center;
+        cursor: pointer;
+    }
+    .upload-card:hover {
+        border-color: #0d47a1 !important;
+        background-color: #f0f7ff;
+        transform: translateY(-3px);
+    }
+
+    .image-preview-wrapper {
+        width: 100%;
+        min-height: 180px;
+        background: #ffffff;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border: 1px solid #dee2e6;
+    }
+
+    #ecg-preview-img, #xray-preview-img {
+        max-height: 170px;
+        object-fit: contain;
+        width: 100%;
+    }
+
+    .text-light-blue { color: #1976d2; opacity: 0.7; }
+
+    /* Action Button */
+    .btn-submit {
+        background-color: #1976d2;
+        color: white;
+        border: none;
+        padding: 16px 20px;
+        font-size: 18px;
+        border-radius: 12px;
+        cursor: pointer;
+        width: 100%;
+        transition: 0.3s;
+        font-weight: 600;
+        margin-top: 20px;
+        box-shadow: 0 4px 15px rgba(25,118,210,0.2);
+    }
+    .btn-submit:hover { 
+        background-color: #0d47a1; 
+        box-shadow: 0 6px 20px rgba(25,118,210,0.4);
+    }
+
+    @keyframes slideIn { from {opacity:0; transform: translateY(20px);} to {opacity:1; transform: translateY(0);} }
+</style>
+
+<div class="container-custom">
+    <div class="header">
+        <h1>Heart Risk Assessment</h1>
+        <p class="subtitle">Multi-Modal AI Personal Health Tracker</p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="card">
+            
+            <div class="section">
+                <h3><i class="fas fa-notes-medical me-2"></i>Step 1: Clinical Details</h3>
+                <div class="grid">
+                    <div class="input-group-custom">
+                        <label>Age</label>
+                        <input type="number" name="Age" placeholder="Years" required>
+                    </div>
+                    <div class="input-group-custom">
+                        <label>BMI</label>
+                        <input type="number" name="BMI" step="0.1" placeholder="Index" required>
+                    </div>
+                    <div class="input-group-custom">
+                        <label>Gender</label>
+                        <select name="Gender" required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="input-group-custom">
+                        <label>Resting BP</label>
+                        <input type="number" name="RestingBP" placeholder="mmHg" required>
+                    </div>
+                    <div class="input-group-custom">
+                        <label>Cholesterol</label>
+                        <input type="number" name="Cholesterol" placeholder="mg/dl" required>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-5 opacity-25">
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <h3 class="h5 fw-bold text-primary mb-3"><i class="fas fa-wave-square me-2"></i>Step 2: ECG Image</h3>
+                    <label for="ecg-upload" class="upload-card d-block">
+                        <div id="ecg-placeholder">
+                            <i class="fas fa-upload fa-2x text-light-blue mb-2"></i>
+                            <p class="mb-0 small fw-bold">Click to upload ECG Waveform</p>
+                        </div>
+                        <div class="image-preview-wrapper d-none" id="ecg-wrapper">
+                            <img id="ecg-preview-img" src="#" alt="ECG Preview">
+                        </div>
+                    </label>
+                    <input type="file" name="ecg_image" id="ecg-upload" class="d-none" accept="image/*" required onchange="previewImage(this, 'ecg')">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <h3 class="h5 fw-bold text-primary mb-3"><i class="fas fa-x-ray me-2"></i>Step 3: Chest X-ray</h3>
+                    <label for="xray-upload" class="upload-card d-block">
+                        <div id="xray-placeholder">
+                            <i class="fas fa-file-medical fa-2x text-light-blue mb-2"></i>
+                            <p class="mb-0 small fw-bold">Click to upload Chest X-ray</p>
+                        </div>
+                        <div class="image-preview-wrapper d-none" id="xray-wrapper">
+                            <img id="xray-preview-img" src="#" alt="X-ray Preview">
+                        </div>
+                    </label>
+                    <input type="file" name="xray_image" id="xray-upload" class="d-none" accept="image/*" onchange="previewImage(this, 'xray')">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">🚀 Analyze Heart Health Risk</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function previewImage(input, type) {
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            const previewImg = document.getElementById(`${type}-preview-img`);
+            const wrapper = document.getElementById(`${type}-wrapper`);
+            const placeholder = document.getElementById(`${type}-placeholder`);
+            
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                wrapper.classList.remove('d-none'); // Show the white preview box
+                placeholder.classList.add('d-none'); // Hide the icon/text
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+{% endblock %}

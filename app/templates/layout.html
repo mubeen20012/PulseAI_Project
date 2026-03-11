@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PulseAI | Heart Health Platform</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --accent-blue: #0061FF;
+            --dark-blue: #0A2647;
+            --soft-bg: #F8FAFC; 
+            --text-dark: #1E293B;
+            --bot-bubble: #F1F5F9;
+        }
+
+        body { 
+            background-color: var(--soft-bg); 
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar { border-bottom: 1px solid rgba(0,0,0,0.05); padding: 1rem 0; }
+        .navbar-brand { font-weight: 800; font-size: 1.5rem; color: var(--accent-blue) !important; }
+        .nav-link { font-weight: 600; color: var(--text-dark) !important; padding: 0.5rem 1rem !important; }
+        .nav-link:hover { color: var(--accent-blue) !important; }
+
+        /* --- CHAT WIDGET UI --- */
+        #chat-widget-container {
+               position: fixed !important;
+               bottom: 30px !important;
+               right: 30px !important; /* Distance from the edge of the screen */
+               z-index: 10000 !important;
+               display: flex !important;
+               flex-direction: column !important;
+               align-items: flex-end !important; /* Aligns items to the right */
+        }
+        /* The Round Trigger Button */
+        #chat-trigger {
+            width: 60px !important;
+            height: 60px !important;
+            border-radius: 50% !important;
+            background: linear-gradient(135deg, #0061FF, #60EFFF) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 97, 255, 0.3) !important;
+            transition: transform 0.2s ease;
+        }
+
+        #chat-trigger:hover { transform: scale(1.05); }
+
+  #chat-box {
+    width: 360px !important;
+    height: 520px !important;
+    background: white !important;
+    border-radius: 20px !important;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.15) !important;
+    margin-bottom: 15px !important; /* Creates the gap above the button */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.08) !important;
+    /* Removed absolute positioning to let Flexbox handle alignment */
+}
+
+.chat-header {
+    background: #0A2647;
+    color: white;
+    padding: 16px 20px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+        .chat-body { 
+            flex: 1 !important; 
+            overflow-y: auto !important; 
+            padding: 15px !important; 
+            background: #fdfdfd !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+            
+
+        /* Message Bubbles */
+        .msg { 
+            padding: 12px 16px; 
+            border-radius: 18px; 
+            font-size: 0.95rem; 
+            line-height: 1.4;
+            max-width: 85%; 
+            position: relative;
+        }
+
+        .bot-msg { 
+            background: var(--bot-bubble); 
+            color: var(--text-dark); 
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .user-msg { 
+            background: var(--accent-blue); 
+            color: white; 
+            align-self: flex-end; 
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 97, 255, 0.2);
+        }
+
+        /* Footer Input Area */
+        .chat-footer { 
+            padding: 15px; 
+            background: white; 
+            border-top: 1px solid #F1F5F9; 
+        }
+
+        .input-group {
+            background: #F8FAFC;
+            border-radius: 12px;
+            padding: 5px;
+            border: 1px solid #E2E8F0;
+        }
+
+        #user-input {
+            background: transparent;
+            border: none;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        #user-input:focus { box-shadow: none; }
+
+        .btn-send {
+            background: var(--accent-blue);
+            color: white;
+            border-radius: 10px !important;
+            padding: 8px 15px;
+            border: none;
+        }
+
+        .d-none { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <i class="fas fa-heartbeat me-2"></i>PulseAI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Predictor</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('history') }}">History</a></li>
+                        <li class="nav-item"><a class="btn btn-outline-danger btn-sm ms-3 px-3 rounded-pill" href="{{ url_for('logout') }}">Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+                        <li class="nav-item"><a class="btn btn-primary btn-sm text-white ms-2 px-4 rounded-pill" href="{{ url_for('signup') }}">Sign Up</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <div id="chat-widget-container">
+        <div id="chat-trigger" onclick="toggleChat()" title="Chat with PulseAI">
+            <i class="fas fa-robot fa-lg"></i>
+        </div>
+
+        <div id="chat-box" class="d-none">
+            <div class="chat-header">
+                <div>
+                    <i class="fas fa-shield-heart me-2"></i>
+                    <span>PulseAI Health Assistant</span>
+                </div>
+                <i class="fas fa-times" onclick="toggleChat()" style="cursor:pointer; opacity: 0.8;"></i>
+            </div>
+            
+            <div id="chat-content" class="chat-body">
+               <div class="msg bot-msg">Welcome to PulseAI! I am your virtual heart health assistant. How can I assist you today?</div>
+            </div>
+
+            <div class="chat-footer">
+                <div class="input-group">
+                    <input type="text" id="user-input" class="form-control" placeholder="Type your question..." autocomplete="off">
+                    <button onclick="sendMessage()" class="btn btn-send">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.classList.toggle('d-none');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('user-input');
+            const content = document.getElementById('chat-content');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // Append User Message
+            content.innerHTML += `<div class="msg user-msg">${message}</div>`;
+            input.value = '';
+            content.scrollTop = content.scrollHeight;
+
+            fetch('/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: message})
+            })
+            .then(res => res.json())
+            .then(data => {
+                // Append Bot Response
+                content.innerHTML += `<div class="msg bot-msg">${data.response}</div>`;
+                content.scrollTop = content.scrollHeight;
+            })
+            .catch(err => {
+                console.error("Chat Error:", err);
+                content.innerHTML += `<div class="msg bot-msg">I'm sorry, I'm having trouble connecting right now.</div>`;
+            });
+        }
+
+        document.getElementById('user-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

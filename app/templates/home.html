@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <section class="text-center py-5 mb-5" style="background: linear-gradient(135deg, #0A2647, #2C74B3); color: white; border-radius: 0 0 50px 50px; margin-top: -2rem;">
+        <div class="container py-5">
+            <h1 class="display-3 fw-bold mb-3">PulseAI: Your Heart's Best Friend</h1>
+            <p class="lead mb-4 fs-4">Advanced AI technology to understand, track, and protect your heart health.</p>
+            {% if not current_user.is_authenticated %}
+                <a href="{{ url_for('signup') }}" class="btn btn-lg btn-light text-primary fw-bold px-5 shadow-lg rounded-pill">Create Free Account</a>
+            {% else %}
+                <a href="{{ url_for('index') }}" class="btn btn-lg btn-light text-primary fw-bold px-5 shadow-lg rounded-pill">Start New Prediction</a>
+            {% endif %}
+        </div>
+    </section>
+</div>
+
+<div class="container my-5 py-4">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <h2 class="fw-bold mb-4">Why Monitor Your Heart?</h2>
+            <p class="text-muted fs-5">
+                Heart disease remains the leading cause of health concerns globally. Often, early signs are invisible to the naked eye. 
+                <strong>PulseAI</strong> uses Multi-Modal Artificial Intelligence to "see" what humans might miss, providing early warnings that can save lives.
+            </p>
+        </div>
+        <div class="col-lg-6 text-center">
+            
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-white shadow-sm" style="border-radius: 50px;">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-5">How to Use the PulseAI System</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="p-4">
+                    <div class="bg-soft-blue rounded-circle d-inline-block p-3 mb-3" style="background: #f0f7ff;">
+                        <i class="fas fa-id-card fa-3x text-primary"></i>
+                    </div>
+                    <h4>1. Input Profile</h4>
+                    <p class="text-muted">Enter basic health stats like age, BMI, and blood pressure.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="p-4">
+                    <div class="bg-soft-blue rounded-circle d-inline-block p-3 mb-3" style="background: #f0f7ff;">
+                        <i class="fas fa-upload fa-3x text-primary"></i>
+                    </div>
+                    <h4>2. Upload Scans</h4>
+                    <p class="text-muted">Upload your ECG rhythm chart and Chest X-ray image.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="p-4">
+                    <div class="bg-soft-blue rounded-circle d-inline-block p-3 mb-3" style="background: #f0f7ff;">
+                        <i class="fas fa-chart-line fa-3x text-primary"></i>
+                    </div>
+                    <h4>3. Get AI Insights</h4>
+                    <p class="text-muted">Our 3-layered AI fusion calculates your risk in seconds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="info-section py-5 mt-5">
+    <div class="container text-center">
+        <h2 class="mb-5">Our Intelligent Analysis</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <i class="fas fa-file-medical fa-3x text-info mb-3"></i>
+                <h5>Health History</h5>
+                <p class="small">We evaluate clinical records to find patterns in your history.</p>
+            </div>
+            <div class="col-md-4">
+                <i class="fas fa-wave-square fa-3x text-info mb-3"></i>
+                <h5>Rhythm Scan</h5>
+                <p class="small">Our AI listens to the 'beat' of your heart via ECG signals.</p>
+            </div>
+            <div class="col-md-4">
+                <i class="fas fa-x-ray fa-3x text-info mb-3"></i>
+                <h5>Visual Scan</h5>
+                <p class="small">Computer Vision looks at heart size and structure in X-rays.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
