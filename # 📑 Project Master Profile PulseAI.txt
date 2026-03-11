@@ -1,0 +1,58 @@
+# 📑 Project Master Profile: PulseAI
+**Date:** March 2026  
+**Project Lead:** Musfira Mubeen (AI Engineer & Data Scientist)  
+**Concept:** Multi-Modal AI Personal Health Tracker  
+
+---
+
+## 🔬 1. Project Vision
+PulseAI is a high-fidelity medical intelligence system designed to move beyond single-source diagnostics. By fusing tabular clinical data, 2D medical imaging (X-rays), and 1D time-series signals (ECG), it provides a holistic heart disease risk assessment.
+
+---
+
+## 🛠 2. The Technical Stack (The "How")
+| Category | Technology |
+| :--- | :--- |
+| **Language** | Python 3.9+ |
+| **Deep Learning** | TensorFlow, Keras (ANN, CNN, LSTM) |
+| **Computer Vision** | OpenCV, MobileNetV2 |
+| **Backend/Web** | Flask, Flask-Login (Authentication) |
+| **Database** | SQLite (User Profiles, Risk History) |
+| **Data Processing** | NumPy, Pandas, Scikit-learn |
+| **DevOps** | Docker (Containerization) |
+
+---
+
+## 🧠 3. Multi-Modal Architecture
+The system uses a **Late Fusion** strategy to process data:
+
+1. **ANN (Artificial Neural Network):** Handles 13 structured parameters (Age, BP, BMI, etc.).
+2. **CNN (MobileNetV2):** Performs feature extraction on Chest X-ray images (224x224).
+3. **LSTM (Long Short-Term Memory):** Processes temporal ECG signal sequences.
+4. **Fusion Layer:** Concatenates embeddings into a unified Dense layer (256 units) for final probability calculation.
+
+---
+
+## 🔒 4. Engineering Features (v2.0)
+- **Persistent Storage:** Every user has a profile saved in **SQLite**, tracking their risk history over time.
+- **Session Security:** **Flask-Login** manages secure entry, protecting patient confidentiality.
+- **Natural Language Interface:** An integrated **AI Chatbot** translates technical probabilities into human-readable health advice.
+- **Cloud-Ready:** A `Dockerfile` ensures the project runs identically on Render, Hugging Face, or AWS.
+
+---
+
+## 📊 5. Risk Scoring Logic
+The system outputs a probability score translated into actionable tiers:
+- **🔴 High Risk (≥ 0.75):** Critical attention needed.
+- **🟡 Moderate Risk (0.45 – 0.74):** Monitoring and lifestyle changes.
+- **🟢 Low Risk (< 0.45):** Baseline maintenance.
+
+---
+
+## 🚀 6. Future MLOps Roadmap
+- [ ] **MLflow Integration:** To track model experiments and versioning.
+- [ ] **Automated CI/CD:** Using GitHub Actions for auto-deployment.
+- [ ] **Real-time Monitoring:** Tracking prediction drift in a production environment.
+
+---
+**Disclaimer:** *This project is for research and educational purposes. It is a technical demonstration of Multi-Modal AI and not a substitute for professional medical diagnosis.*
